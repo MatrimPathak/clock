@@ -1,0 +1,126 @@
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* ===== APP ===== */
+.app {
+  --clock-size: 3vw;
+  --gap: calc(var(--clock-size) * 0.08);
+
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--background-color);
+}
+
+/* ===== TIME WRAPPER ===== */
+.time {
+  display: flex;
+  gap: var(--clock-size);
+}
+
+/* ===== ROWS ===== */
+.time-row {
+  display: flex;
+  gap: var(--clock-size);
+}
+
+/* ===== DIGITS (THE ONLY GRID) ===== */
+.digit {
+  display: grid;
+  grid-template-columns: repeat(4, min-content);
+  gap: var(--gap);
+}
+
+/* ===== CLOCK ===== */
+.clock {
+  --w: 48%;
+  --h: 3px;
+  --dur: 0.4s;
+
+  width: var(--clock-size);
+  height: var(--clock-size);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+
+  border: 2px solid var(--clock-border);
+  background: linear-gradient(
+    225deg,
+    var(--clock-gradient-1),
+    var(--clock-gradient-2)
+  );
+}
+
+.clock::before,
+.clock::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - var(--h) / 2);
+  left: 50%;
+  transform-origin: 0% 50%;
+  width: var(--w);
+  height: var(--h);
+  background: var(--line-color);
+  border-radius: 999px;
+  transition: calc(var(--dur) * 1s) ease-in-out;
+}
+
+.clock::before { transform: rotate(calc(var(--hour-angle) * 1deg)); }
+.clock::after  { transform: rotate(calc(var(--minute-angle) * 1deg)); }
+
+/* ===== THEMES ===== */
+.app.light {
+  --background-color: #fff;
+  --clock-border: #c0c0c0;
+  --clock-gradient-1: #f0f0f0;
+  --clock-gradient-2: #d0d0d0;
+  --line-color: #000;
+}
+
+.app.dark {
+  --background-color: #000;
+  --clock-border: #101010;
+  --clock-gradient-1: #000;
+  --clock-gradient-2: #000;
+  --line-color: #fff;
+}
+
+/* ===== MOBILE: STACKED ===== */
+@media (max-width: 600px) {
+  .time {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .time-row {
+    justify-content: center;
+  }
+
+  .hours .clock {
+    transform: scale(1.1);
+  }
+
+  .seconds .clock {
+    transform: scale(0.85);
+    opacity: 0.75;
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    --clock-size: clamp(18px, 6vw, 28px);
+  }
+}
